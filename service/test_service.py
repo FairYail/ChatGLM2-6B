@@ -85,13 +85,15 @@ class TestService:
     # 检查评论类型
     @classmethod
     def check_comments(cls, param: CommentDto):
-        prompt = '''你是一个游戏公司的客服，后面会给你发一些语句，你需要做出一些判断 \n''' + param.prompt + '''\n这一句话是什么情感方向的言论。你以下三个选项：积极的、中性的、不好的的，不要有多余发言'''
+        prompt = '''你是一个游戏公司的客服，后面会给你发一些语句，你需要做出一些判断
+        ''' + param.prompt + '''
+        这一句话是什么情感方向的言论。你以下三个选项：积极的、中性的、不好的的，不要有多余发言'''
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                                      prompt,
                                                      history=[],
                                                      max_length=8192,
                                                      top_p=0.8,
-                                                     temperature=0.9)
+                                                     temperature=0.8)
         torch_gc()
         return response
 
