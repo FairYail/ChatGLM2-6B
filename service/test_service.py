@@ -94,7 +94,7 @@ class TestService:
                                                      history=[],
                                                      max_length=8192,
                                                      top_p=0.8,
-                                                     temperature=0.95)
+                                                     temperature=0.9)
         torch_gc()
         return response
 
