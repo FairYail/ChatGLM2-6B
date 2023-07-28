@@ -90,11 +90,12 @@ class TestService:
 祝贵公司的前程也能和视频一样 ，抓住所有的坏机遇，而且颗粒无收[玫瑰][玫瑰][玫瑰][比心][比心][比心]同时也希望贵公司的前程也和视频一样，在离成功一步之遥的时候功亏一篑，没用的东西
 这一句话是什么情感方向的言论。你以下三个选项：积极的、中性的、不好的的，不要有多余发言'''
         response, history = cls.model_2b.stream_chat(cls.tokenizer_2b,
-                                              prompt,
-                                              history=[],
-                                              max_length=8192,
-                                              top_p=0.8,
-                                              temperature=0.95)
+                                                     prompt,
+                                                     history=[],
+                                                     return_past_key_values=True,
+                                                     max_length=8192,
+                                                     top_p=0.8,
+                                                     temperature=0.95)
         torch_gc()
         return response
 
