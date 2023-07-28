@@ -1,4 +1,6 @@
 from fastapi import APIRouter, Request
+
+from dto.comment_dto import CommentDto
 from service.test_service import TestService
 from service.text_consts import prompt
 from vo.response import Response
@@ -15,5 +17,5 @@ async def GetAnswer(key: int):
 
 
 @test_routers.post('/GetCommentType')
-async def GetAnswer(param: {}):
+async def GetCommentType(param: CommentDto):
     return Response.success(TestService().get_comments(param))

@@ -10,6 +10,7 @@ from IPython.display import display, Markdown, clear_output
 from base_log import llog
 from consts.code_resp import Err_Embedder_Info
 from consts.public_consts import commentMap
+from dto.comment_dto import CommentDto
 from utils import load_model_on_gpus
 from text2vec import SentenceModel, semantic_search
 
@@ -84,20 +85,14 @@ class TestService:
 
     # 检查评论类型
     @classmethod
-    def check_comments(cls, json_post):
-        json_post_list = json.loads(json_post)
-        prompt = json_post_list.get(
-            'prompt') + '''\n 你是一个游戏公司的客服，根据上面的评论语句，对这句话做出评论，你只需要回复我:积极地、正向的、不好的、普通的、中性的、负向的、不好的, 词组中的一个，你回复我三个字，不要有多余发言'''
-        history = json_post_list.get('history')
-        max_length = json_post_list.get('max_length')
-        top_p = json_post_list.get('top_p')
-        temperature = json_post_list.get('temperature')
+    def check_comments(cls, param: CommentDto):
+        prompt = param.prompt + '''\n 你是一个游戏公司的客服，根据上面的评论语句，对这句话做出评论，你只需要回复我:积极地、正向的、不好的、普通的、中性的、负向的、不好的, 词组中的一个，你回复我三个字，不要有多余发言'''
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
-                                              history=history,
-                                              max_length=max_length if max_length else 2048,
-                                              top_p=top_p if top_p else 0.7,
-                                              temperature=temperature if temperature else 0.95)
+                                              history=param.history,
+                                              max_length=param.maxLength if param.maxLength else 2048,
+                                              top_p=param.top_p if param.top_p else 0.7,
+                                              temperature=param.temperature if param.temperature else 0.95)
         torch_gc()
         return response
 
@@ -111,12 +106,10 @@ class TestService:
 
     # 使用向量模型检验最终返回值
     @classmethod
-    def get_comments(cls, param) -> {}:
-        llog.info(f"请求数据：{param}")
-        json_post = json.dumps(param)
-
+    def get_comments(cls, param: CommentDto):
+        llog.info(f"请求数据：{param.__dict__}")
         # 检查评论情感类型
-        resp = cls.check_comments(json_post)
+        resp = cls.check_comments(param)
         hits = cls.matchEmbedderQName(resp)
 
         lst = []
@@ -127,7 +120,6 @@ class TestService:
             commentType = commentMap.get(commentName, "UNKNOWN")
             lst.append(CommentVo(commentName, commentType, score))
 
-        llog.info(f"请求数据：{json_post}")
         llog.info(f"AI分析：{resp}")
         # 打印结果
         for val in lst:
