@@ -113,6 +113,7 @@ class TestService:
     @classmethod
     def get_comments(cls, request: Request) -> {}:
         json_post_raw = request.json()
+        llog.info(f"请求数据：{json_post_raw}")
         json_post = json.dumps(json_post_raw)
 
         # 检查评论情感类型
