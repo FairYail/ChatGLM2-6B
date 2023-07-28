@@ -17,3 +17,4 @@ tqdm~=4.65.0
 loguru~=0.7.0
 pydantic~=2.0.2
 ipython~=8.14.0
+pymongo~=4.4.1
