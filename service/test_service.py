@@ -85,7 +85,7 @@ class TestService:
     # 检查评论类型
     @classmethod
     def check_comments(cls, param: CommentDto):
-        prompt = param.prompt + '''\n 你是一个游戏公司的客服，根据上面的评论语句，对这句话做出评论，你只需要回复我:积极地、正向的、不好的、普通的、中性的、负向的、不好的, 词组中的一个，你回复我三个字，不要有多余发言'''
+        prompt = '''你是一个游戏公司的客服，后面会给你发一些语句，你需要做出一些判断 \n''' + param.prompt + '''\n这一句话是什么言论。你只需要回复我:积极地、不好的、中性的，三个词组中的一个，你回复我三个字，不要有多余发言'''
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
                                               history=param.history,
