@@ -15,6 +15,7 @@ from app.middlewares import RequestLoggerMiddleware
 from base_log import llog
 from router.test_router import test_routers
 from router.health_router import health_routers
+from service.test_service import TestService
 
 
 # 注册关闭事件信息
@@ -72,6 +73,7 @@ def main():
     llog.info("配置文件初始化完成")
 
     # 初始化service
+    TestService().init_model()
 
     # 启动应用
     startApp = start_app()
