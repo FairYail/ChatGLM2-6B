@@ -1,15 +1,11 @@
-import json
-
 from pydantic import BaseModel
-from dataclasses import dataclass
 
 from consts.code_resp import Err_Param_Info
 
 
-@dataclass
 class CommentDto(BaseModel):
     prompt: str
-    history: []
+    history: list
     maxLength: int
     top_p: float
     temperature: float
@@ -31,4 +27,7 @@ class CommentDto(BaseModel):
         return {
             "prompt": self.prompt,
             "history": self.history,
+            "maxLength": self.maxLength,
+            "top_p": self.top_p,
+            "temperature": self.temperature,
         }

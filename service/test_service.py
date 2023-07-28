@@ -1,7 +1,3 @@
-import json
-
-from fastapi import Request
-
 import torch
 from transformers import AutoTokenizer
 # 使用 Markdown 格式打印模型输出
@@ -107,7 +103,7 @@ class TestService:
     # 使用向量模型检验最终返回值
     @classmethod
     def get_comments(cls, param: CommentDto):
-        llog.info(f"请求数据：{param.__dict__}")
+        llog.info(f"请求数据：{param.to_dict()}")
         # 检查评论情感类型
         resp = cls.check_comments(param)
         hits = cls.matchEmbedderQName(resp)
