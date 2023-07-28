@@ -113,7 +113,7 @@ class TestService:
     # 使用向量模型检验最终返回值
     @classmethod
     def get_comments(cls, request: Request) -> {}:
-        json_post_raw = await request.json()
+        json_post_raw = request.json()
         json_post = json.dumps(json_post_raw)
 
         # 检查评论情感类型
