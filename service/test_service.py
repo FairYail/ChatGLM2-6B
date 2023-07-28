@@ -111,10 +111,9 @@ class TestService:
 
     # 使用向量模型检验最终返回值
     @classmethod
-    def get_comments(cls, request: Request) -> {}:
-        json_post_raw = await request.json()
-        llog.info(f"请求数据：{json_post_raw}")
-        json_post = json.dumps(json_post_raw)
+    def get_comments(cls, param) -> {}:
+        llog.info(f"请求数据：{param}")
+        json_post = json.dumps(param)
 
         # 检查评论情感类型
         resp = cls.check_comments(json_post)

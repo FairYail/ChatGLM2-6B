@@ -15,5 +15,5 @@ async def GetAnswer(key: int):
 
 
 @test_routers.post('/GetCommentType')
-async def GetAnswer(request: Request):
-    return Response.success(TestService().get_comments(request))
+async def GetAnswer(param: {}):
+    return Response.success(TestService().get_comments(param))
