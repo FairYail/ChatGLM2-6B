@@ -69,7 +69,7 @@ class TestService:
         )
 
         # 加载向量化数据信息
-        for name, _ in commentMap:
+        for name in commentMap:
             qE = cls.embedder.encode([name])
             cls.embeddingNameList.append(name)
             cls.embeddingList.append(qE)
