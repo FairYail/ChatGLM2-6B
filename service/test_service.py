@@ -2,6 +2,8 @@ from transformers import AutoTokenizer, AutoModel
 # 使用 Markdown 格式打印模型输出
 from IPython.display import display, Markdown, clear_output
 
+from utils import load_model_on_gpus
+
 
 class TestService:
     _instance = None
@@ -26,7 +28,7 @@ class TestService:
         # 加载模型
         model_path = "/data/chatglm2-6b"
         tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-        model = AutoModel.from_pretrained(model_path, trust_remote_code=True).half().cuda()
+        model = load_model_on_gpus(model_path, num_gpus=4)
         model = model.eval()
         cls.tokenizer_2b = tokenizer
         cls.model_2b = model
