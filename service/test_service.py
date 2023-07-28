@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 from transformers import AutoTokenizer
 # 使用 Markdown 格式打印模型输出
@@ -66,10 +67,12 @@ class TestService:
         )
 
         # 加载向量化数据信息
+        eList = []
         for name in commentMap:
             qE = cls.embedder.encode([name])
             cls.embeddingNameList.append(name)
-            cls.embeddingList.append(qE)
+            eList.extend(np.array(qE, dtype=np.float32))
+        cls.embeddingList = np.array(eList)
 
     @classmethod
     def display_answer(cls, query, history=[]):
