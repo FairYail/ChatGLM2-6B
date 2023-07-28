@@ -14,5 +14,4 @@ class CommentDto(BaseModel):
     def to_dict(self):
         return {
             "prompt": self.prompt,
-            "history": self.history,
         }
