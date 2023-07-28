@@ -88,16 +88,13 @@ class TestService:
     def check_comments(cls, param: CommentDto):
         prompt = '''你是一个游戏公司的客服，后面会给你发一些语句，你需要做出一些判断 \n''' + param.prompt + '''\n这一句话是什么情感方向的言论。你以下三个选项：积极的、中性的、不好的的，不要有多余发言'''
 
-        history = gr.State([])
-        past_key_values = gr.State(None)
         max_length = gr.Slider(0, 32768, value=8192, step=1.0, label="Maximum length", interactive=True)
         top_p = gr.Slider(0, 1, value=0.8, step=0.01, label="Top P", interactive=True)
         temperature = gr.Slider(0, 1, value=0.95, step=0.01, label="Temperature", interactive=True)
 
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
-                                              history=history,
-                                              past_key_values=past_key_values,
+                                              history=[],
                                               max_length=max_length,
                                               top_p=top_p,
                                               temperature=temperature)
