@@ -1,5 +1,5 @@
 commentMap = {
-    "不好的": "NEGATIVE",
+    "正能量的": "NEGATIVE",
     "中性的": "NEUTRAL",
-    "积极的": "POSITIVE",
+    "负能量的": "POSITIVE",
 }
