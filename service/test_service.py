@@ -92,7 +92,6 @@ class TestService:
         response, history = cls.model_2b.stream_chat(cls.tokenizer_2b,
                                                      prompt,
                                                      history=[],
-                                                     return_past_key_values=True,
                                                      max_length=8192,
                                                      top_p=0.8,
                                                      temperature=0.95)
