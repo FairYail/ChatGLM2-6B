@@ -52,26 +52,27 @@ class TestService:
         self.init_model()
 
     # 加载模型
-    def init_model(self):
+    @classmethod
+    def init_model(cls):
         # 加载大预言模型模型
         model_path = "/data/chatglm2-6b"
         tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
         model = load_model_on_gpus(model_path, num_gpus=4)
         model = model.eval()
-        TestService.tokenizer_2b = tokenizer
-        TestService.model_2b = model
+        cls.tokenizer_2b = tokenizer
+        cls.model_2b = model
 
         # 加载向量匹配模型
-        TestService.embedder = SentenceModel(
+        cls.embedder = SentenceModel(
             model_name_or_path="/data/embedding-model/text2vec-large-chinese",
             device="cuda"
         )
 
         # 加载向量化数据信息
         for name, _ in commentMap:
-            qE = TestService.embedder.encode([name])
-            TestService.embeddingNameList.append(name)
-            TestService.embeddingList.append(qE)
+            qE = cls.embedder.encode([name])
+            cls.embeddingNameList.append(name)
+            cls.embeddingList.append(qE)
 
     @classmethod
     def display_answer(cls, query, history=[]):
