@@ -98,6 +98,7 @@ class TestService:
         if cls.embedder is None:
             raise Err_Embedder_Info
         qE = cls.embedder.encode([qName])
+        llog.info(f"向量化数据：{len(cls.embeddingList)}")
         return semantic_search(qE, cls.embeddingList, top_k=10)
 
     # 使用向量模型检验最终返回值
