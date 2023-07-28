@@ -52,24 +52,25 @@ class TestService:
     @classmethod
     def init_model(cls):
         # 加载大预言模型模型
-        model_path = "/data/chatglm2-6b"
-        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-        model = load_model_on_gpus(model_path, num_gpus=4)
-        model = model.eval()
-        cls.tokenizer_2b = tokenizer
-        cls.model_2b = model
-
-        # 加载向量匹配模型
-        cls.embedder = SentenceModel(
-            model_name_or_path="/data/embedding-model/text2vec-large-chinese",
-            device="cuda"
-        )
-
-        # 加载向量化数据信息
-        for name in commentMap:
-            qE = cls.embedder.encode([name])
-            cls.embeddingNameList.append(name)
-            cls.embeddingList.append(qE)
+        # model_path = "/data/chatglm2-6b"
+        # tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+        # model = load_model_on_gpus(model_path, num_gpus=4)
+        # model = model.eval()
+        # cls.tokenizer_2b = tokenizer
+        # cls.model_2b = model
+        #
+        # # 加载向量匹配模型
+        # cls.embedder = SentenceModel(
+        #     model_name_or_path="/data/embedding-model/text2vec-large-chinese",
+        #     device="cuda"
+        # )
+        #
+        # # 加载向量化数据信息
+        # for name in commentMap:
+        #     qE = cls.embedder.encode([name])
+        #     cls.embeddingNameList.append(name)
+        #     cls.embeddingList.append(qE)
+        return
 
     @classmethod
     def display_answer(cls, query, history=[]):
@@ -101,18 +102,19 @@ class TestService:
         return semantic_search(qE, cls.embeddingList, top_k=10)
 
     # 使用向量模型检验最终返回值
-    @classmethod
-    def get_comments(cls, param: CommentDto):
+    def get_comments(self, param=CommentDto):
         llog.info(f"请求数据：{param.to_dict()}")
+        # 参数校验
+        param.Validator()
         # 检查评论情感类型
-        resp = cls.check_comments(param)
-        hits = cls.matchEmbedderQName(resp)
+        resp = self.check_comments(param)
+        hits = self.matchEmbedderQName(resp)
 
         lst = []
         # 返回结果
         for hit in hits[0]:
             score = hit['score']
-            commentName = cls.embeddingNameList[hit['corpus_id']]
+            commentName = self.embeddingNameList[hit['corpus_id']]
             commentType = commentMap.get(commentName, "UNKNOWN")
             lst.append(CommentVo(commentName, commentType, score))
 
