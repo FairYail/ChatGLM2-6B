@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import gradio as gr
 from transformers import AutoTokenizer
 # 使用 Markdown 格式打印模型输出
 from IPython.display import display, Markdown, clear_output
@@ -86,12 +87,20 @@ class TestService:
     @classmethod
     def check_comments(cls, param: CommentDto):
         prompt = '''你是一个游戏公司的客服，后面会给你发一些语句，你需要做出一些判断 \n''' + param.prompt + '''\n这一句话是什么情感方向的言论。你以下三个选项：正能量的、中性的、负能量的，不要有多余发言'''
+
+        history = gr.State([])
+        past_key_values = gr.State(None)
+        max_length = gr.Slider(0, 32768, value=8192, step=1.0, label="Maximum length", interactive=True)
+        top_p = gr.Slider(0, 1, value=0.8, step=0.01, label="Top P", interactive=True)
+        temperature = gr.Slider(0, 1, value=0.95, step=0.01, label="Temperature", interactive=True)
+
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
-                                              history=param.history,
-                                              max_length=param.maxLength if param.maxLength else 2048,
-                                              top_p=param.top_p if param.top_p else 0.7,
-                                              temperature=param.temperature if param.temperature else 0.95)
+                                              history=history,
+                                              past_key_values=past_key_values,
+                                              max_length=max_length,
+                                              top_p=top_p,
+                                              temperature=temperature)
         torch_gc()
         return response
 
