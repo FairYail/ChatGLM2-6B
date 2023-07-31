@@ -6,7 +6,7 @@ from IPython.display import display, Markdown, clear_output
 
 from base_log import llog
 from consts.code_resp import Err_Embedder_Info
-from consts.public_consts import commentMap
+from consts.public_consts import commentMap, commentTypeMap
 from dto.comment_dto import CommentDto
 from utils import load_model_on_gpus
 from text2vec import SentenceModel, semantic_search
@@ -62,18 +62,18 @@ class TestService:
         cls.model_2b = model
 
         # 加载向量匹配模型
-        # cls.embedder = SentenceModel(
-        #     model_name_or_path="/data/embedding-model/text2vec-large-chinese",
-        #     device="cuda"
-        # )
-        #
-        # # 加载向量化数据信息
-        # eList = []
-        # for name in commentMap:
-        #     qE = cls.embedder.encode([name])
-        #     cls.embeddingNameList.append(name)
-        #     eList.extend(np.array(qE, dtype=np.float32))
-        # cls.embeddingList = np.array(eList)
+        cls.embedder = SentenceModel(
+            model_name_or_path="/data/embedding-model/text2vec-large-chinese",
+            device="cuda"
+        )
+
+        # 加载向量化数据信息
+        eList = []
+        for name in commentTypeMap:
+            qE = cls.embedder.encode([name])
+            cls.embeddingNameList.append(name)
+            eList.extend(np.array(qE, dtype=np.float32))
+        cls.embeddingList = np.array(eList)
 
     @classmethod
     def display_answer(cls, query, history=[]):
@@ -158,3 +158,21 @@ class TestService:
         qE = cls.embedder.encode([qName])
         llog.info(f"向量化数据：{len(cls.embeddingList)}")
         return semantic_search(qE, cls.embeddingList, top_k=10)
+
+    def Embedding(self, param: CommentDto):
+        if TestService.embedder is None:
+            raise Err_Embedder_Info
+        hits = self.matchEmbedderQName(param.prompt)
+        lst = []
+        # 返回结果
+        for hit in hits[0]:
+            score = hit['score']
+            commentName = self.embeddingNameList[hit['corpus_id']]
+            commentType = commentMap.get(commentName, "UNKNOWN")
+            lst.append(CommentVo(commentName, commentType, score))
+
+        # 打印结果
+        for val in lst:
+            llog.info(val.__dict__)
+        return lst
+

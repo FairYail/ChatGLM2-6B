@@ -24,3 +24,8 @@ async def GetCommentType(param: CommentDto):
 @test_routers.post('/GetCommentTypeDg')
 async def GetCommentType(param: CommentDto):
     return Response.success(TestService().check_comments_type_dg(param))
+
+
+@test_routers.post('/embedding')
+async def Embedding(param: CommentDto):
+    return Response.success(TestService().Embedding(param))
