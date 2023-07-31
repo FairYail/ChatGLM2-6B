@@ -85,7 +85,8 @@ class TestService:
     # 检查评论类型
     @classmethod
     def check_comments(cls, param: CommentDto):
-        prompt = '''你是一个游戏公司的客服，请对以下语句进行等级评分，评分范围为1到10分，不要提供额外回答。该语句是：\n
+        # prompt = '''你是一个游戏公司的客服，请对以下语句进行等级评分，评分范围为1到10分，不要提供额外回答。该语句是：\n
+        prompt = '''你是一个游戏公司的客服，请对以下语句进行等级评分，情感导向是负面的到积极的，评分范围对应着1到10分，不要提供额外回答，只需要评分即可。该语句是：\n
         ''' + param.prompt
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                                      prompt,
