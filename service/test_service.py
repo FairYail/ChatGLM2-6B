@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, AutoModel
 # 使用 Markdown 格式打印模型输出
 from IPython.display import display, Markdown, clear_output
 
@@ -54,8 +54,9 @@ class TestService:
     def init_model(cls):
         # 加载大预言模型模型
         model_path = "/data/chatglm2-6b"
-        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-        model = load_model_on_gpus(model_path, num_gpus=1)
+        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True, revision="v1.0")
+        # model = load_model_on_gpus(model_path, num_gpus=1)
+        model = AutoModel.from_pretrained(model_path, trust_remote_code=True, device='cuda', revision="v1.0")
         model = model.eval()
         cls.tokenizer_2b = tokenizer
         cls.model_2b = model
@@ -88,11 +89,11 @@ class TestService:
         prompt = '''你是一个游戏公司的客服，请对以下语句进行等级评分，评分范围对应着1到10分，只需要回答多少分，不要提供额外回答。该语句是：\n
         ''' + param.prompt
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
-                                                     prompt,
-                                                     history=[],
-                                                     max_length=2048,
-                                                     top_p=0.7,
-                                                     temperature=0.4)
+                                              prompt,
+                                              history=[],
+                                              max_length=2048,
+                                              top_p=0.7,
+                                              temperature=0.4)
         # torch_gc()
         llog.info(f"prompt：{prompt}")
         return response
