@@ -91,9 +91,9 @@ class TestService:
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
                                               history=[],
-                                              max_length=2048,
-                                              top_p=0.7,
-                                              temperature=0.4)
+                                              max_length=8192,
+                                              top_p=0.8,
+                                              temperature=0.95)
         # torch_gc()
         llog.info(f"prompt：{prompt}")
         return response
