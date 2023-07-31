@@ -61,18 +61,18 @@ class TestService:
         cls.model_2b = model
 
         # 加载向量匹配模型
-        cls.embedder = SentenceModel(
-            model_name_or_path="/data/embedding-model/text2vec-large-chinese",
-            device="cuda"
-        )
-
-        # 加载向量化数据信息
-        eList = []
-        for name in commentMap:
-            qE = cls.embedder.encode([name])
-            cls.embeddingNameList.append(name)
-            eList.extend(np.array(qE, dtype=np.float32))
-        cls.embeddingList = np.array(eList)
+        # cls.embedder = SentenceModel(
+        #     model_name_or_path="/data/embedding-model/text2vec-large-chinese",
+        #     device="cuda"
+        # )
+        #
+        # # 加载向量化数据信息
+        # eList = []
+        # for name in commentMap:
+        #     qE = cls.embedder.encode([name])
+        #     cls.embeddingNameList.append(name)
+        #     eList.extend(np.array(qE, dtype=np.float32))
+        # cls.embeddingList = np.array(eList)
 
     @classmethod
     def display_answer(cls, query, history=[]):
