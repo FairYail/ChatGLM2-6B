@@ -94,6 +94,7 @@ class TestService:
                                                      top_p=0.7,
                                                      temperature=0.95)
         # torch_gc()
+        llog.info(f"prompt：{prompt}")
         return response
 
     # 向量胡匹配
