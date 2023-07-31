@@ -97,7 +97,7 @@ with gr.Blocks() as demo:
             emptyBtn = gr.Button("Clear History")
             max_length = gr.Slider(0, 32768, value=8192, step=1.0, label="Maximum length", interactive=True)
             top_p = gr.Slider(0, 1, value=0.8, step=0.01, label="Top P", interactive=True)
-            temperature = gr.Slider(0, 1, value=0.5, step=0.01, label="Temperature", interactive=True)
+            temperature = gr.Slider(0, 1, value=1, step=0.01, label="Temperature", interactive=True)
 
     history = gr.State([])
     past_key_values = gr.State(None)
