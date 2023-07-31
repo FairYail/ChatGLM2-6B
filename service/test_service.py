@@ -54,8 +54,8 @@ class TestService:
     def init_model(cls):
         # 加载大预言模型模型
         model_path = "/data/chatglm2-6b"
-        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-        model = load_model_on_gpus(model_path, num_gpus=4)
+        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=False)
+        model = load_model_on_gpus(model_path, num_gpus=1)
         model = model.eval()
         cls.tokenizer_2b = tokenizer
         cls.model_2b = model
@@ -137,21 +137,15 @@ class TestService:
 
     @classmethod
     def check_comments_type_dg(cls, param: CommentDto):
-        prompt = '''你的角色是是游戏公司工作人员。请问下面的语句属于其中哪一种(只需要回答选项，不需要说其他信息):：\n
-         ''' + param.prompt + '''A、玩法咨询
-B、注销账号
-C、充值未到账
-D、功能异常
-E、玩法吐槽
-F、误触找回
-G、未成年人退款'''
+        prompt = '''你的角色是是游戏公司客服人员。请问下面的语句属于其中哪一种(只需要回答选项，不需要说其他信息):：\n
+         ''' + param.prompt + '''A、玩法咨询\n B、注销账号\n C、充值未到账\n D、功能异常\n E、玩法吐槽\n F、误触找回\n G、未成年人退款'''
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
                                               history=[],
                                               max_length=2048,
                                               top_p=0.7,
                                               temperature=0.3)
-        # torch_gc()
+        torch_gc()
         llog.info(f"prompt：{prompt}")
         return response
 
