@@ -54,7 +54,7 @@ class TestService:
     def init_model(cls):
         # 加载大预言模型模型
         model_path = "/data/chatglm2-6b"
-        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=False)
+        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
         model = load_model_on_gpus(model_path, num_gpus=1)
         model = model.eval()
         cls.tokenizer_2b = tokenizer
