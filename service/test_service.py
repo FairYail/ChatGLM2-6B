@@ -85,9 +85,8 @@ class TestService:
     # 检查评论类型
     @classmethod
     def check_comments(cls, param: CommentDto):
-        prompt = '''你是一个游戏公司的客服，后面会给你发一些语句，你需要做出一些判断
-        ''' + param.prompt + '''
-        这一句话是什么情感方向的言论。你以下三个选项：积极的、中性的、不好的的，不要有多余发言'''
+        prompt = '''你是一个游戏公司的客服，请对以下语句进行等级评分，评分范围为1到10分，不要提供额外回答。该语句是：\n
+        ''' + param.prompt
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                                      prompt,
                                                      history=[],
@@ -113,21 +112,22 @@ class TestService:
         param.Validator()
         # 检查评论情感类型
         resp = self.check_comments(param)
-        hits = self.matchEmbedderQName(resp)
+        return resp
+        # hits = self.matchEmbedderQName(resp)
 
-        lst = []
-        # 返回结果
-        for hit in hits[0]:
-            score = hit['score']
-            commentName = self.embeddingNameList[hit['corpus_id']]
-            commentType = commentMap.get(commentName, "UNKNOWN")
-            lst.append(CommentVo(commentName, commentType, score))
-
-        llog.info(f"AI分析：{resp}")
-        # 打印结果
-        for val in lst:
-            llog.info(val.__dict__)
-        lst = CommentVo.sort_list_by_score(lst)
-        if len(lst) == 0:
-            return "UNKNOWN"
-        return lst[0].commentType
+        # lst = []
+        # # 返回结果
+        # for hit in hits[0]:
+        #     score = hit['score']
+        #     commentName = self.embeddingNameList[hit['corpus_id']]
+        #     commentType = commentMap.get(commentName, "UNKNOWN")
+        #     lst.append(CommentVo(commentName, commentType, score))
+        #
+        # llog.info(f"AI分析：{resp}")
+        # # 打印结果
+        # for val in lst:
+        #     llog.info(val.__dict__)
+        # lst = CommentVo.sort_list_by_score(lst)
+        # if len(lst) == 0:
+        #     return "UNKNOWN"
+        # return lst[0].commentType
