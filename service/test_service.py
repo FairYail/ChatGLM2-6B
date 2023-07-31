@@ -137,7 +137,7 @@ class TestService:
 
     @classmethod
     def check_comments_type_dg(cls, param: CommentDto):
-        prompt = '''你的角色是是游戏公司客服人员。请问下面的语句属于其中哪一种(只需要回答选项，不需要说其他信息):：\n
+        prompt = '''你的角色是是游戏公司客服人员。请问下面的语句属于其中哪一种(只需要回答选项，不需要说其他信息):
          ''' + param.prompt + '''\nA、玩法咨询\n B、注销账号\n C、充值未到账\n D、功能异常\n E、玩法吐槽\n F、误触找回\n G、未成年人退款'''
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
