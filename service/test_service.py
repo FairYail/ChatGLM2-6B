@@ -132,3 +132,34 @@ class TestService:
         # if len(lst) == 0:
         #     return "UNKNOWN"
         # return lst[0].commentType
+
+        # 检查评论类型
+
+    @classmethod
+    def check_comments_type_dg(cls, param: CommentDto):
+        prompt = '''你的角色是是游戏公司工作人员。请问下面的语句属于其中哪一种(只需要回答选项，不需要说其他信息):：\n
+         ''' + param.prompt + '''A、玩法咨询
+B、注销账号
+C、充值未到账
+D、功能异常
+E、玩法吐槽
+F、误触找回
+G、未成年人退款'''
+        response, history = cls.model_2b.chat(cls.tokenizer_2b,
+                                              prompt,
+                                              history=[],
+                                              max_length=2048,
+                                              top_p=0.7,
+                                              temperature=0.3)
+        # torch_gc()
+        llog.info(f"prompt：{prompt}")
+        return response
+
+    # 向量胡匹配
+    @classmethod
+    def matchEmbedderQName(cls, qName):
+        if cls.embedder is None:
+            raise Err_Embedder_Info
+        qE = cls.embedder.encode([qName])
+        llog.info(f"向量化数据：{len(cls.embeddingList)}")
+        return semantic_search(qE, cls.embeddingList, top_k=10)
