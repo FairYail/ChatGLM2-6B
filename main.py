@@ -73,7 +73,7 @@ def main():
     llog.info("配置文件初始化完成")
 
     # 初始化service
-    TestService().init_model()
+    TestService()
 
     # 启动应用
     startApp = start_app()
