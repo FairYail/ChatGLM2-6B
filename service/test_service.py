@@ -144,7 +144,7 @@ class TestService:
                                               history=[],
                                               max_length=2048,
                                               top_p=0.9,
-                                              temperature=0.1)
+                                              temperature=0.85)
         torch_gc()
         llog.info(f"prompt：{prompt}")
         return response
