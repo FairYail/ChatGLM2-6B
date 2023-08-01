@@ -64,18 +64,18 @@ class TestService:
         cls.model_2b = model
 
         # 加载向量匹配模型
-        cls.embedder = SentenceModel(
-            model_name_or_path="/data/embedding-model/text2vec-large-chinese",
-            device="cuda"
-        )
-
-        # 加载向量化数据信息
-        eList = []
-        for name in commentTypeMap:
-            qE = cls.embedder.encode([name])
-            cls.embeddingNameList.append(name)
-            eList.extend(np.array(qE, dtype=np.float32))
-        cls.embeddingList = np.array(eList)
+        # cls.embedder = SentenceModel(
+        #     model_name_or_path="/data/embedding-model/text2vec-large-chinese",
+        #     device="cuda"
+        # )
+        #
+        # # 加载向量化数据信息
+        # eList = []
+        # for name in commentTypeMap:
+        #     qE = cls.embedder.encode([name])
+        #     cls.embeddingNameList.append(name)
+        #     eList.extend(np.array(qE, dtype=np.float32))
+        # cls.embeddingList = np.array(eList)
 
     @classmethod
     def display_answer(cls, query, history=[]):
@@ -88,7 +88,7 @@ class TestService:
     # 检查评论类型
     @classmethod
     def check_comments(cls, param: CommentDto):
-        prompt = '''你是一个游戏公司的客服，请对以下语句进行等级评分，评分范围对应着1到10分，只需要回答多少分，不要提供额外回答。该语句是：\n
+        prompt = '''你是一个游戏公司的客服，请对以下语句进行评分，评分范围对应着1到10分，只需要回答多少分，不要提供额外回答。该语句是：\n
         ''' + param.prompt
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
@@ -96,7 +96,7 @@ class TestService:
                                               max_length=8192,
                                               top_p=0.8,
                                               temperature=0.95)
-        # torch_gc()
+        torch_gc()
         llog.info(f"prompt：{prompt}")
         return response
 
