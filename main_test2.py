@@ -79,15 +79,13 @@ sentences = [
 #     print()
 
 
-sentences = ["I love you", "I fuck you"]
+# sentences = ["I love you", "I fuck you"]
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
+from snownlp import SnowNLP
 
 # text = "I love this product!"
 for text in sentences:
-    sia = SentimentIntensityAnalyzer()
-    sentiment = sia.polarity_scores(text)
-
-    print(text)
-    for k in sorted(sentiment):
-        print('{0}: {1}, '.format(k, sentiment[k]), end='\n')
+    s = SnowNLP(text)
+    sentiment_score = s.sentiments
+    print(f"情感得分：{sentiment_score}", end='\n')
