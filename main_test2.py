@@ -72,4 +72,7 @@ sentences = [
 ]
 
 c = Cemotion()
-print(c.predict(sentences))
+arr_list = c.predict(sentences)
+for v in arr_list:
+    print(v)
+    print()
