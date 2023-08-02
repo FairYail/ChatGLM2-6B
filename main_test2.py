@@ -87,11 +87,5 @@ sia = SentimentIntensityAnalyzer()
 sentiment = sia.polarity_scores(text)
 
 print(text)
-print('{0}: {1}, '.format(k, ss[k]), end='\n')
-
-if sentiment['compound'] > 0:
-    print("Positive")
-elif sentiment['compound'] < 0:
-    print("Negative")
-else:
-    print("Neutral")
+for k in sorted(sentiment):
+    print('{0}: {1}, '.format(k, ss[k]), end='\n')
