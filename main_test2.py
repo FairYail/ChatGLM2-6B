@@ -79,6 +79,7 @@ sentences = [
 #     print()
 
 
+sentences = ["I love you", "I fuck you"]
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 
