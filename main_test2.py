@@ -10,7 +10,7 @@ nltk.download()
 analyzer = SentimentIntensityAnalyzer()
 
 # 输入的语句
-input_sentence = "这部电影真的很棒，我非常喜欢！"
+input_sentence = "祝贵公司的前程也能和视频一样 ，抓住所有的坏机遇，而且颗粒无收[玫瑰][玫瑰][玫瑰][比心][比心][比心]同时也希望贵公司的前程也和视频一样，在离成功一步之遥的时候功亏一篑，没用的东西！"
 
 # 进行情感分析
 sentiment_score = analyzer.polarity_scores(input_sentence)
