@@ -1,10 +1,10 @@
 #!/data/pyenv/customer-robot/bin/python3
 
 import nltk
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 # 下载VADER情感分析器所需数据
-nltk.download('vader_lexicon')
+# nltk.download('vader_lexicon')
 
 sentences = [
     "祝贵公司的前程也能和视频一样 ，抓住所有的坏机遇，而且颗粒无收[玫瑰][玫瑰][玫瑰][比心][比心][比心]同时也希望贵公司的前程也和视频一样，在离成功一步之遥的时候功亏一篑，没用的东西",
@@ -71,7 +71,7 @@ sentences = [
 ]
 
 for sentence in sentences:
-    sid = SentimentIntensityAnalyzer()
+    sia = SentimentIntensityAnalyzer()
     print(sentence)
     ss = sid.polarity_scores(sentence)
     for k in sorted(ss):
