@@ -4,7 +4,7 @@ import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 # 下载VADER情感分析器所需数据
-nltk.download()
+nltk.download('all')
 
 # 初始化情感分析器
 analyzer = SentimentIntensityAnalyzer()
