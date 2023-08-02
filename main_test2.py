@@ -88,4 +88,6 @@ from snownlp import SnowNLP
 for text in sentences:
     s = SnowNLP(text)
     sentiment_score = s.sentiments
+    print(text)
     print(f"情感得分：{sentiment_score}", end='\n')
+    print()
