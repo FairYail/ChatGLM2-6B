@@ -86,7 +86,7 @@ text = "I love this product!"
 sia = SentimentIntensityAnalyzer()
 sentiment = sia.polarity_scores(text)
 
-print(sentence)
+print(text)
 print('{0}: {1}, '.format(k, ss[k]), end='\n')
 
 if sentiment['compound'] > 0:
