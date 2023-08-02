@@ -89,4 +89,4 @@ for text in sentences:
 
     print(text)
     for k in sorted(sentiment):
-    print('{0}: {1}, '.format(k, sentiment[k]), end='\n')
+        print('{0}: {1}, '.format(k, sentiment[k]), end='\n')
