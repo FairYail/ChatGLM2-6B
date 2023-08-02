@@ -1,4 +1,5 @@
 #!/data/pyenv/customer-robot/bin/python3
+from cemotion import Cemotion
 
 # import nltk
 # from nltk.sentiment import SentimentIntensityAnalyzer
@@ -69,25 +70,6 @@ sentences = [
     "这游戏很不错，我不玩",
     "我下载了 每天都玩",
 ]
-#
-# for sentence in sentences:
-#     sia = SentimentIntensityAnalyzer()
-#     print(sentence)
-#     ss = sid.polarity_scores(sentence)
-#     for k in sorted(ss):
-#         print('{0}: {1}, '.format(k, ss[k]), end='\n')
-#     print()
 
-
-# sentences = ["I love you", "I fuck you"]
-import nltk
-from nltk.sentiment import SentimentIntensityAnalyzer
-from snownlp import SnowNLP
-
-# text = "I love this product!"
-for text in sentences:
-    s = SnowNLP(text)
-    sentiment_score = s.sentiments
-    print(text)
-    print(f"情感得分：{sentiment_score}", end='\n')
-    print()
+c = Cemotion()
+print(c.predict(sentences))
