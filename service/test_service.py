@@ -160,6 +160,7 @@ class TestService:
                     if row_data[3] != "POSITIVE":
                         continue
                     llog.info(f'comment： {row_data}')
+                    llog.info(f'comment： {row_data[1]}')
                     comment = CommentDto(prompt=row_data[1])
                     commentType = self.get_comments(comment)
                     if commentType >= 7:
