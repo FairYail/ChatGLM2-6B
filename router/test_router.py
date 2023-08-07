@@ -20,6 +20,10 @@ async def GetAnswer(key: int):
 async def GetCommentType(param: CommentDto):
     return Response.success(TestService().get_comments(param))
 
+@test_routers.get('/GetCommentTypeXlsx')
+async def GetCommentType():
+    return Response.success(TestService().get_comments_xlsx())
+
 
 @test_routers.post('/GetCommentTypeDg')
 async def GetCommentType(param: CommentDto):
