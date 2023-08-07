@@ -99,7 +99,7 @@ class TestService:
                                               max_length=8192,
                                               top_p=0.8,
                                               temperature=0.95)
-        # torch_gc()
+        torch_gc()
         llog.info(f"prompt：{prompt}")
         return response
 
