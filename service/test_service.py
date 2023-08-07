@@ -14,7 +14,7 @@ from utils import load_model_on_gpus
 from text2vec import SentenceModel, semantic_search
 
 from vo.comment_vo import CommentVo
-import openpyxl
+import pandas as pd
 
 DEVICE = "cuda"
 DEVICE_ID = "0"
@@ -142,20 +142,17 @@ class TestService:
     # 使用向量模型检验最终返回值
     def get_comments_xlsx(self):
         # 读取xlsx文件
-        wb = openpyxl.load_workbook("/data/ChatGLM2-6B/comments.xlsx")
-        # 获取第一个工作表
-        sheet = wb.active
+        df = pd.read_excel("/data/ChatGLM2-6B/comments.xlsx", sheet_name="Comments")
+
         # 存储每一行的数据
-        all_rows_data = []
+        all_rows_data = df.values.tolist()
+
         # 遍历每一行
         count = 0
-        for row in sheet.iter_rows(values_only=True):
-            row_data = []
+
+        for row_data in all_rows_data:
             if count % 2000 == 0:
                 llog.info(f"当前处理数量：{count}")
-            # 遍历行中的每个单元格
-            for cell_value in row:
-                row_data.append(cell_value)
 
             if count > 0:
                 # AI 判断正向负向
