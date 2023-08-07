@@ -152,7 +152,7 @@ class TestService:
         count = 0
 
         for row_data in all_rows_data:
-            if count % 1000 == 0:
+            if count % 100 == 0:
                 llog.info(f"当前处理数量：{count}")
 
             if count > 0:
