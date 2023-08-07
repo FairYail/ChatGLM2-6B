@@ -70,4 +70,38 @@ sentences = [
     "我下载了 每天都玩",
 ]
 
+import requests
+import json
 
+API_KEY = "xZTix57FQgWS9HyBGSiIsPWo"
+SECRET_KEY = "CLe8kxVZZNWeem8P1Xpc4zKQznumzG3s"
+
+
+def main():
+    url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify?charset=UTF-8&access_token=" + get_access_token()
+
+    payload = json.dumps({
+        "text": "祝贵公司的前程也能和视频一样 ，抓住所有的坏机遇，而且颗粒无收[玫瑰][玫瑰][玫瑰][比心][比心][比心]同时也希望贵公司的前程也和视频一样，在离成功一步之遥的时候功亏一篑，没用的东西"
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response.text)
+
+
+def get_access_token():
+    """
+    使用 AK，SK 生成鉴权签名（Access Token）
+    :return: access_token，或是None(如果错误)
+    """
+    url = "https://aip.baidubce.com/oauth/2.0/token"
+    params = {"grant_type": "client_credentials", "client_id": API_KEY, "client_secret": SECRET_KEY}
+    return str(requests.post(url, params=params).json().get("access_token"))
+
+
+if __name__ == '__main__':
+    main()

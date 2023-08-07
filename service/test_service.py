@@ -6,7 +6,7 @@ from IPython.display import display, Markdown, clear_output
 
 from base_log import llog
 from consts.code_resp import Err_Embedder_Info
-from consts.public_consts import commentMap, commentTypeMap
+from consts.public_consts import commentMap, commentTypeMap, commentSourceMap
 from dto.comment_dto import CommentDto
 from utils import load_model_on_gpus
 from text2vec import SentenceModel, semantic_search
@@ -64,18 +64,18 @@ class TestService:
         cls.model_2b = model
 
         # 加载向量匹配模型
-        # cls.embedder = SentenceModel(
-        #     model_name_or_path="/data/embedding-model/text2vec-large-chinese",
-        #     device="cuda"
-        # )
-        #
-        # # 加载向量化数据信息
-        # eList = []
-        # for name in commentTypeMap:
-        #     qE = cls.embedder.encode([name])
-        #     cls.embeddingNameList.append(name)
-        #     eList.extend(np.array(qE, dtype=np.float32))
-        # cls.embeddingList = np.array(eList)
+        cls.embedder = SentenceModel(
+            model_name_or_path="/data/embedding-model/text2vec-large-chinese",
+            device="cuda"
+        )
+
+        # 加载向量化数据信息
+        eList = []
+        for name in commentSourceMap:
+            qE = cls.embedder.encode([name])
+            cls.embeddingNameList.append(name)
+            eList.extend(np.array(qE, dtype=np.float32))
+        cls.embeddingList = np.array(eList)
 
     @classmethod
     def display_answer(cls, query, history=[]):
@@ -116,27 +116,26 @@ class TestService:
         param.Validator()
         # 检查评论情感类型
         resp = self.check_comments(param)
-        return resp
-        # hits = self.matchEmbedderQName(resp)
+        # return resp
+        hits = self.matchEmbedderQName(resp)
 
-        # lst = []
-        # # 返回结果
-        # for hit in hits[0]:
-        #     score = hit['score']
-        #     commentName = self.embeddingNameList[hit['corpus_id']]
-        #     commentType = commentMap.get(commentName, "UNKNOWN")
-        #     lst.append(CommentVo(commentName, commentType, score))
-        #
-        # llog.info(f"AI分析：{resp}")
-        # # 打印结果
-        # for val in lst:
-        #     llog.info(val.__dict__)
-        # lst = CommentVo.sort_list_by_score(lst)
-        # if len(lst) == 0:
-        #     return "UNKNOWN"
-        # return lst[0].commentType
+        lst = []
+        # 返回结果
+        for hit in hits[0]:
+            score = hit['score']
+            commentName = self.embeddingNameList[hit['corpus_id']]
+            commentType = commentMap.get(commentName, "UNKNOWN")
+            lst.append(CommentVo(commentName, commentType, score))
 
-        # 检查评论类型
+        llog.info(f"AI分析：{resp}")
+        # 打印结果
+        for val in lst:
+            llog.info(val.__dict__)
+        lst = CommentVo.sort_list_by_score(lst)
+        if len(lst) == 0:
+            return "UNKNOWN"
+        return lst[0].commentType
+
 
     @classmethod
     def check_comments_type_dg(cls, param: CommentDto):
