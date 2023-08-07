@@ -6,7 +6,7 @@ from IPython.display import display, Markdown, clear_output
 
 from base_log import llog
 from consts.code_resp import Err_Embedder_Info
-from consts.public_consts import commentMap, commentTypeMap, commentSourceMap
+from consts.public_consts import commentMap, commentSourceMap
 from dto.comment_dto import CommentDto
 from utils import load_model_on_gpus
 from text2vec import SentenceModel, semantic_search
