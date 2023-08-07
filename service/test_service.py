@@ -132,8 +132,8 @@ class TestService:
             lst.append(CommentVo(commentName, commentType, score))
 
         # 打印结果
-        for val in lst:
-            llog.info(val.__dict__)
+        # for val in lst:
+        #     llog.info(val.__dict__)
         lst = CommentVo.sort_list_by_score(lst)
         if len(lst) == 0:
             return "UNKNOWN"
