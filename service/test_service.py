@@ -125,7 +125,7 @@ class TestService:
         for hit in hits[0]:
             score = hit['score']
             commentName = self.embeddingNameList[hit['corpus_id']]
-            commentType = commentMap.get(commentName, "UNKNOWN")
+            commentType = commentSourceMap.get(commentName, "UNKNOWN")
             lst.append(CommentVo(commentName, commentType, score))
 
         # 打印结果
@@ -135,7 +135,6 @@ class TestService:
         if len(lst) == 0:
             return "UNKNOWN"
         return lst[0].commentType
-
 
     @classmethod
     def check_comments_type_dg(cls, param: CommentDto):
@@ -176,4 +175,3 @@ class TestService:
         for val in lst:
             llog.info(val.__dict__)
         return lst
-
