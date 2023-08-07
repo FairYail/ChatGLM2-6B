@@ -3,8 +3,7 @@ from pydantic import BaseModel
 from consts.code_resp import Err_Param_Info
 
 
-class CommentDto(BaseModel):
-    prompt: str
+class CommentDto:
 
     def __init__(self, prompt=str):
         self.prompt = prompt
