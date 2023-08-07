@@ -88,7 +88,7 @@ class TestService:
     # 检查评论类型
     @classmethod
     def check_comments(cls, param: CommentDto):
-        prompt = '''你是一个游戏公司的客服，请对以下语句进行评分，由坏到好评分范围对应着1到10分。对于嘲讽、骂人、侮辱、负面情绪的回答评分不得超过3。对于夸赞喜欢游戏的评论打高分，中性的回答分数在4-6中选一个，只需要回答多少分，不要提供额外回答。该语句是：
+        prompt = '''你是一个游戏公司的客服，请对以下语句进行评分，由坏到好评分范围对应着1到10分。对于嘲讽、骂人、侮辱、负面情绪的回答评分不得超过3分。对于中性的回答分数在4-6中选一个。只需要回答多少分，不要提供额外回答。该语句是：
         ''' + param.prompt
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
