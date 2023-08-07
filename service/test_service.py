@@ -56,8 +56,8 @@ class TestService:
     @classmethod
     def init_model(cls):
         # 加载大预言模型模型
-        # model_path = "/data/chatglm2-6b"
-        model_path = "THUDM/chatglm2-6b-32k"
+        model_path = "/data/chatglm2-6b"
+        # model_path = "THUDM/chatglm2-6b-32k"
         # model_path = "THUDM/chatglm2-12b"
         tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
         # model = load_model_on_gpus(model_path, num_gpus=1)
@@ -99,7 +99,7 @@ class TestService:
                                               max_length=8192,
                                               top_p=0.8,
                                               temperature=0.95)
-        torch_gc()
+        # torch_gc()
         llog.info(f"prompt：{prompt}")
         return response
 
