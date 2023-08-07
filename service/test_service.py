@@ -100,7 +100,7 @@ class TestService:
                                               top_p=0.8,
                                               temperature=0.95)
         torch_gc()
-        llog.info(f"prompt：{prompt}")
+        # llog.info(f"prompt：{prompt}")
         return response
 
     # 向量胡匹配
@@ -152,7 +152,7 @@ class TestService:
         count = 0
 
         for row_data in all_rows_data:
-            if count % 2000 == 0:
+            if count % 1000 == 0:
                 llog.info(f"当前处理数量：{count}")
 
             if count > 0:
