@@ -79,7 +79,7 @@ def main():
     llog.info("server start...")
 
     # 启动应用
-    uvicorn.run(app=startApp, host="", port=19396, workers=2)
+    uvicorn.run(app=startApp, host="", port=19396, workers=2, reload=True)
 
 
 if __name__ == "__main__":
