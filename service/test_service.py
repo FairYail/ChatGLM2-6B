@@ -90,7 +90,7 @@ class TestService:
     def check_comments(cls, param: CommentDto):
         prompt = '''你是一个游戏公司的客服，下面的内容是游戏广告投放后用户的评论，请对以下语句进行评分，由坏到好评分范围对应着1到10分。出现讽刺阴阳怪气的，骂人嘲讽类的内容评分必须很低。对于夸赞游戏的内容打高分，中性的回答分数在4-6中选一个，只需要回答多少分，不要提供额外回答。该语句是：
         ''' + param.prompt
-        response, history = cls.model_2b.chat(cls.tokenizer_2b
+        response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
                                               history=[],
                                               max_length=8192,
