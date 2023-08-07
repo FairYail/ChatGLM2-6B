@@ -162,8 +162,7 @@ class TestService:
                 if len(row_data) >= 4:
                     if row_data[3] != "POSITIVE":
                         continue
-                    comment = CommentDto()
-                    comment.prompt = row_data[1]
+                    comment = CommentDto(prompt=row_data[1])
                     commentType = self.get_comments(comment)
                     if commentType >= 7:
                         row_data.append("POSITIVE")
