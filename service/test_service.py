@@ -114,12 +114,12 @@ class TestService:
 
     # 使用向量模型检验最终返回值
     def get_comments(self, param=CommentDto):
-        llog.info(f"请求数据：{param.to_dict()}")
+        # llog.info(f"请求数据：{param.to_dict()}")
         # 参数校验
         param.Validator()
         # 检查评论情感类型
         resp = self.check_comments(param)
-        llog.info(f"AI分析：{resp}")
+        # llog.info(f"AI分析：{resp}")
         # return resp
         hits = self.matchEmbedderQName(resp)
 
@@ -152,14 +152,16 @@ class TestService:
         for row in sheet.iter_rows(values_only=True):
             row_data = []
             if count % 2000 == 0:
-                print("当前处理数量：", count)
+                llog.info(f"当前处理数量：{count}")
             # 遍历行中的每个单元格
             for cell_value in row:
                 row_data.append(cell_value)
 
             if count > 0:
                 # AI 判断正向负向
-                if len(row_data) > 2:
+                if len(row_data) >= 4:
+                    if row_data[3] != "POSITIVE":
+                        continue
                     comment = CommentDto()
                     comment.prompt = row_data[1]
                     commentType = self.get_comments(comment)
@@ -180,7 +182,7 @@ class TestService:
             for row_data in all_rows_data:
                 csv_writer.writerow(row_data)
 
-        print(f'Data saved to {csv_file_path}')
+        llog.info(f'Data saved to {csv_file_path}')
 
 
 @classmethod
