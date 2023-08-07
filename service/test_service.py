@@ -88,7 +88,7 @@ class TestService:
     # 检查评论类型
     @classmethod
     def check_comments(cls, param: CommentDto):
-        prompt = '''你是一个游戏公司的客服，请对以下语句进行评分，又坏到好评分范围对应着1到100分，对于非游戏内容的信息一律不准给高分，出现讽刺阴阳怪气游戏的内容，评分记得打底一些，对于夸赞公司的言论，评分记得高一点，只需要回答多少分，不要提供额外回答。该语句是：
+        prompt = '''你是一个游戏公司的客服，请对以下语句进行评分，又坏到好评分范围对应着1到10分，对于非游戏内容的信息一律不准给高分，出现讽刺阴阳怪气游戏的内容，评分记得打底一些，对于夸赞公司的言论，评分记得高一点，只需要回答多少分，不要提供额外回答。该语句是：
         ''' + param.prompt
         response, history = cls.model_2b.chat(cls.tokenizer_2b,
                                               prompt,
@@ -116,6 +116,7 @@ class TestService:
         param.Validator()
         # 检查评论情感类型
         resp = self.check_comments(param)
+        llog.info(f"AI分析：{resp}")
         # return resp
         hits = self.matchEmbedderQName(resp)
 
@@ -127,7 +128,6 @@ class TestService:
             commentType = commentMap.get(commentName, "UNKNOWN")
             lst.append(CommentVo(commentName, commentType, score))
 
-        llog.info(f"AI分析：{resp}")
         # 打印结果
         for val in lst:
             llog.info(val.__dict__)

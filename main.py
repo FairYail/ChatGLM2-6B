@@ -2,7 +2,6 @@
 
 # -*- coding: utf-8 -*-
 import argparse
-import time
 
 import uvicorn
 from fastapi import FastAPI
@@ -80,7 +79,7 @@ def main():
     llog.info("server start...")
 
     # 启动应用
-    uvicorn.run(app=startApp, host="", port=19396)
+    uvicorn.run(app=startApp, host="", port=19396, workers=2)
 
 
 if __name__ == "__main__":
