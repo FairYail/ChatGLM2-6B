@@ -146,6 +146,7 @@ class TestService:
 
         # 存储每一行的数据
         all_rows_data = df.values.tolist()
+        llog.info(f'comment： {len(all_rows_data)}')
 
         # 遍历每一行
         count = 0
@@ -159,8 +160,6 @@ class TestService:
                 if len(row_data) >= 4:
                     if row_data[3] != "POSITIVE":
                         continue
-                    llog.info(f'comment： {row_data}')
-                    llog.info(f'comment： {row_data[1]}')
                     comment = CommentDto(prompt=row_data[1])
                     commentType = self.get_comments(comment)
                     if commentType >= 7:
