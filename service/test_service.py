@@ -156,7 +156,7 @@ class TestService:
         for row_data in all_rows_data:
             if count % 100 == 0:
                 llog.info(f"当前处理总数量：{count}")
-                llog.info(f"当前处理正向数量：{count}")
+                llog.info(f"当前处理正向数量：{pCount}")
                 llog.info(f"当前处理位置：{row_data}")
 
             if count == 0:
