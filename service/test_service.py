@@ -150,76 +150,88 @@ class TestService:
 
         # 遍历每一行
         count = 0
+        pCount = 0
+        csv_file_path = '/data/ChatGLM2-6B/output.csv'
 
         for row_data in all_rows_data:
             if count % 100 == 0:
-                llog.info(f"当前处理数量：{count}")
+                llog.info(f"当前处理总数量：{count}")
+                llog.info(f"当前处理正向数量：{count}")
+                llog.info(f"当前处理位置：{row_data}")
 
-            if count > 0:
-                # AI 判断正向负向
-                if len(row_data) >= 4:
-                    if row_data[3] != "POSITIVE":
-                        continue
-                    comment = CommentDto(prompt=row_data[1])
-                    commentType = self.get_comments(comment)
-                    if commentType >= 7:
-                        row_data.append("POSITIVE")
-                    elif commentType >= 4:
-                        row_data.append("NEUTRAL")
-                    else:
-                        row_data.append("NEGATIVE")
+            if count == 0:
+                count += 1
+                all_rows_data.append(row_data)
 
+                # 追加写入列表数据到 CSV 文件
+                with open(csv_file_path, 'a', newline='') as csv_file:
+                    csv_writer = csv.writer(csv_file)
+                    csv_writer.writerow(row_data)
+
+            # AI 判断正向负向
+            if len(row_data) >= 4:
+                if row_data[3] != "POSITIVE":
+                    count += 1
+                    # 追加写入列表数据到 CSV 文件
+                    with open(csv_file_path, 'a', newline='') as csv_file:
+                        csv_writer = csv.writer(csv_file)
+                        csv_writer.writerow(row_data)
+                    continue
+
+                comment = CommentDto(prompt=row_data[1])
+                commentType = self.get_comments(comment)
+                if commentType >= 7:
+                    row_data.append("POSITIVE")
+                elif commentType >= 4:
+                    row_data.append("NEUTRAL")
+                else:
+                    row_data.append("NEGATIVE")
+                pCount += 1
             count += 1
-            all_rows_data.append(row_data)
 
-        # 将数据保存为 CSV 文件
-        csv_file_path = '/data/ChatGLM2-6B/output.csv'
-        with open(csv_file_path, 'w', newline='') as csv_file:
-            csv_writer = csv.writer(csv_file)
-            for row_data in all_rows_data:
+            # 追加写入列表数据到 CSV 文件
+            with open(csv_file_path, 'a', newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
                 csv_writer.writerow(row_data)
 
         llog.info(f'Data saved to {csv_file_path}')
 
+    @classmethod
+    def check_comments_type_dg(cls, param: CommentDto):
+        prompt = '''你的角色是是游戏公司客服人员。请问下面的语句属于其中哪一种(只需要回答选项，不需要说其他信息):\n''' \
+                 + param.prompt + '''\nA、玩法咨询\nB、注销账号\nC、充值未到账\nD、功能异常\nE、玩法吐槽\nF、误触找回\nG、未成年人退款'''
+        response, history = cls.model_2b.chat(cls.tokenizer_2b,
+                                              prompt,
+                                              history=[],
+                                              max_length=2048,
+                                              top_p=0.9,
+                                              temperature=0.85)
+        torch_gc()
+        llog.info(f"prompt：{prompt}")
+        return response
 
-@classmethod
-def check_comments_type_dg(cls, param: CommentDto):
-    prompt = '''你的角色是是游戏公司客服人员。请问下面的语句属于其中哪一种(只需要回答选项，不需要说其他信息):\n''' \
-             + param.prompt + '''\nA、玩法咨询\nB、注销账号\nC、充值未到账\nD、功能异常\nE、玩法吐槽\nF、误触找回\nG、未成年人退款'''
-    response, history = cls.model_2b.chat(cls.tokenizer_2b,
-                                          prompt,
-                                          history=[],
-                                          max_length=2048,
-                                          top_p=0.9,
-                                          temperature=0.85)
-    torch_gc()
-    llog.info(f"prompt：{prompt}")
-    return response
+    # 向量胡匹配
+    @classmethod
+    def matchEmbedderQName(cls, qName):
+        if cls.embedder is None:
+            raise Err_Embedder_Info
+        qE = cls.embedder.encode([qName])
+        # llog.info(f"向量化数据：{len(cls.embeddingList)}")
+        return semantic_search(qE, cls.embeddingList, top_k=10)
 
+    def Embedding(self, param: CommentDto):
+        if TestService.embedder is None:
+            raise Err_Embedder_Info
+        hits = self.matchEmbedderQName(param.prompt)
+        lst = []
+        # 返回结果
+        for hit in hits[0]:
+            score = hit['score']
+            commentName = self.embeddingNameList[hit['corpus_id']]
+            commentType = commentMap.get(commentName, "UNKNOWN")
+            lst.append(CommentVo(commentName, commentType, score))
 
-# 向量胡匹配
-@classmethod
-def matchEmbedderQName(cls, qName):
-    if cls.embedder is None:
-        raise Err_Embedder_Info
-    qE = cls.embedder.encode([qName])
-    # llog.info(f"向量化数据：{len(cls.embeddingList)}")
-    return semantic_search(qE, cls.embeddingList, top_k=10)
-
-
-def Embedding(self, param: CommentDto):
-    if TestService.embedder is None:
-        raise Err_Embedder_Info
-    hits = self.matchEmbedderQName(param.prompt)
-    lst = []
-    # 返回结果
-    for hit in hits[0]:
-        score = hit['score']
-        commentName = self.embeddingNameList[hit['corpus_id']]
-        commentType = commentMap.get(commentName, "UNKNOWN")
-        lst.append(CommentVo(commentName, commentType, score))
-
-    # 打印结果
-    for val in lst:
-        llog.info(val.__dict__)
-    return lst
+        # 打印结果
+        for val in lst:
+            llog.info(val.__dict__)
+        return lst
