@@ -164,16 +164,18 @@ class TestService:
                 all_rows_data.append(row_data)
 
                 # 追加写入列表数据到 CSV 文件
-                with open(csv_file_path, 'a', newline='') as csv_file:
+                with open(csv_file_path, 'a', newline='', encoding='utf-8') as csv_file:
                     csv_writer = csv.writer(csv_file)
                     csv_writer.writerow(row_data)
+
+                continue
 
             # AI 判断正向负向
             if len(row_data) >= 4:
                 if row_data[3] != "POSITIVE":
                     count += 1
                     # 追加写入列表数据到 CSV 文件
-                    with open(csv_file_path, 'a', newline='') as csv_file:
+                    with open(csv_file_path, 'a', newline='', encoding='utf-8') as csv_file:
                         csv_writer = csv.writer(csv_file)
                         csv_writer.writerow(row_data)
                     continue
@@ -190,7 +192,7 @@ class TestService:
             count += 1
 
             # 追加写入列表数据到 CSV 文件
-            with open(csv_file_path, 'a', newline='') as csv_file:
+            with open(csv_file_path, 'a', newline='', encoding='utf-8') as csv_file:
                 csv_writer = csv.writer(csv_file)
                 csv_writer.writerow(row_data)
 
