@@ -11,6 +11,8 @@ import joblib
 
 from base_log import llog
 
+model_filename = 'trained_model.joblib'
+
 
 # -*- coding: utf-8 -*-
 def dataParse():
@@ -84,7 +86,6 @@ def main():
 
     llog.info("开始保存模型到文件")
     # 保存模型到文件
-    model_filename = 'trained_model.joblib'
     joblib.dump(model, model_filename)
     llog.info("开始结束模型到文件")
 
@@ -99,12 +100,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # dataParse()
-    # 获取当前时间
-    # current_time = datetime.now()
-    #
-    # # 格式化为默认字符串
-    # default_format = current_time.strftime('%Y-%m-%d %H:%M:%S')
-    # print("current_time:", current_time)
-    # print("default_format:", default_format)
+    # main()
+    # 加载模型
+    loaded_model = joblib.load(model_filename)
+
+    # 使用加载的模型进行预测
+    while True:
+        new_data = input("Enter: ")
+        if new_data.lower() == 'exit':
+            break  # 如果输入 'exit'，退出循环
+        predictions = loaded_model.predict(new_data)
+        print("Predictions for new data:", predictions)
