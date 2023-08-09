@@ -105,7 +105,5 @@ if __name__ == "__main__":
     loaded_model = joblib.load(model_filename)
 
     # 使用加载的模型进行预测
-    while True:
-        new_data = input("Enter: ")
-        predictions = loaded_model.predict("游戏界面清新，音乐也很搭配，玩起来心情愉悦。")
-        print("Predictions for new data:", predictions)
+    predictions = loaded_model.predict("游戏界面清新，音乐也很搭配，玩起来心情愉悦。")
+    print("Predictions for new data:", predictions)
