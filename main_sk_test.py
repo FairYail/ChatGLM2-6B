@@ -48,7 +48,7 @@ def main():
     # 假设 df 是包含文本数据的DataFrame
 
     # 划分训练集和测试集
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 
     # 文本分词和特征提取
     vectorizer = CountVectorizer()  # 使用词袋模型进行特征提取
