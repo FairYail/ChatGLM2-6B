@@ -2,6 +2,7 @@
 import time
 from datetime import datetime
 
+import jieba
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -12,6 +13,7 @@ import joblib
 from base_log import llog
 
 model_filename = 'trained_model.joblib'
+vectorizer_filename = 'trained_vectorizer.joblib'
 
 
 # -*- coding: utf-8 -*-
@@ -37,6 +39,14 @@ def dataParse():
     # 保存为CSV文件
     csv_filename = '字节评论.csv'  # 文件名
     csv_df.to_csv(csv_filename, index=False)  # index=False 表示不保存行索引
+
+
+def model_predict(text, model, vects):
+    text1 = [" ".join(jieba.cut(text))]
+    text2 = vects.transform(text1)
+    predict_type = model.predict(text2)[0]
+    print(predict_type)
+    return predict_type
 
 
 def main():
@@ -87,9 +97,11 @@ def main():
     llog.info("开始保存模型到文件")
     # 保存模型到文件
     joblib.dump(model, model_filename)
+    joblib.dump(vectorizer, vectorizer_filename)
     llog.info("开始结束模型到文件")
 
     # 加载模型
+    vec = joblib.load(vectorizer_filename)
     loaded_model = joblib.load(model_filename)
 
     # 使用加载的模型进行预测
@@ -97,10 +109,7 @@ def main():
         new_data = input("Enter: ")
         if new_data.lower() == 'exit':
             break  # 如果输入 'exit'，退出循环
-        vect = CountVectorizer()
-        new_text_vectorized = vect.transform([new_data])  # 将输入的文本向量化
-        predictions = loaded_model.predict(new_text_vectorized)
-        print("Predictions for new data:", predictions)
+        model_predict(new_data, loaded_model, vec)
 
 
 if __name__ == "__main__":
