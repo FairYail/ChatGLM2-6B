@@ -107,7 +107,5 @@ if __name__ == "__main__":
     # 使用加载的模型进行预测
     while True:
         new_data = input("Enter: ")
-        if new_data.lower() == 'exit':
-            break  # 如果输入 'exit'，退出循环
-        predictions = loaded_model.predict(new_data)
+        predictions = loaded_model.predict("游戏界面清新，音乐也很搭配，玩起来心情愉悦。")
         print("Predictions for new data:", predictions)
