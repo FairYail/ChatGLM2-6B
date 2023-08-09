@@ -90,18 +90,6 @@ def main():
     llog.info("开始结束模型到文件")
 
     # 加载模型
-    # loaded_model = joblib.load(model_filename)
-
-    # 使用加载的模型进行预测
-    # new_data = ...  # 准备新的数据进行预测
-    # new_data_vec = vectorizer.transform(new_data)  # 对新数据进行特征提取
-    # predictions = loaded_model.predict(new_data_vec)
-    # print("Predictions for new data:", predictions)
-
-
-if __name__ == "__main__":
-    # main()
-    # 加载模型
     loaded_model = joblib.load(model_filename)
 
     # 使用加载的模型进行预测
@@ -113,3 +101,19 @@ if __name__ == "__main__":
         new_text_vectorized = vect.transform([new_data])  # 将输入的文本向量化
         predictions = loaded_model.predict(new_text_vectorized)
         print("Predictions for new data:", predictions)
+
+
+if __name__ == "__main__":
+    main()
+    # # 加载模型
+    # loaded_model = joblib.load(model_filename)
+    #
+    # # 使用加载的模型进行预测
+    # while True:
+    #     new_data = input("Enter: ")
+    #     if new_data.lower() == 'exit':
+    #         break  # 如果输入 'exit'，退出循环
+    #     vect = CountVectorizer()
+    #     new_text_vectorized = vect.transform([new_data])  # 将输入的文本向量化
+    #     predictions = loaded_model.predict(new_text_vectorized)
+    #     print("Predictions for new data:", predictions)
