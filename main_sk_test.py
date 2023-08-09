@@ -97,12 +97,12 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
+    main()
     # dataParse()
     # 获取当前时间
-    current_time = datetime.now()
-
-    # 格式化为默认字符串
-    default_format = current_time.strftime('%Y-%m-%d %H:%M:%S')
-    print("current_time:", current_time)
-    print("default_format:", default_format)
+    # current_time = datetime.now()
+    #
+    # # 格式化为默认字符串
+    # default_format = current_time.strftime('%Y-%m-%d %H:%M:%S')
+    # print("current_time:", current_time)
+    # print("default_format:", default_format)
