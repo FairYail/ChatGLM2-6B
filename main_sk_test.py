@@ -40,10 +40,12 @@ def dataParse():
 def main():
     # 读取数据集
     data = pd.read_csv('./字节评论.csv')  # 假设数据在名为 'data.csv' 的文件中
+    data.dropna(subset=['text_column'], inplace=True)  # 删除含有 NaN 值的行
 
     # 分割特征和标签
     X = data['text_column']  # 假设文本数据在 'text_column' 列中
     y = data['label_column']  # 假设标签在 'label_column' 列中
+    # 假设 df 是包含文本数据的DataFrame
 
     # 划分训练集和测试集
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
